@@ -12,13 +12,13 @@ async function startPrompt(){
         message: 'What would you like to do?',
         name: 'action',
         choices: [ 
-            'View all Employees',
+            'View all Employees', 
             'View all Employees by Department',
             'View all Employees by Manager',
             'Add Employee',
             'Remove Employee',
-            'Update Employee Role',
-            'Update Employee Manager',
+            'Edit Employee Role',
+            'Edit Employee Manager',
             'View all Managers',
             'Add Manager',
             'View all Roles',
@@ -47,11 +47,11 @@ async function startPrompt(){
         case 'Remove Employee':
             removeEmployee();
             break;
-        case 'Update Employee Role':
-            updateRole();
+        case 'Edit Employee Role':
+            editRole();
             break;
-        case 'Update Employee Manager':
-            updateManager();
+        case 'Edit Employee Manager':
+            editEmpManager();
             break;
         case 'View all Managers':
             viewManagers();
@@ -224,7 +224,7 @@ async function removeEmployee(){
 }
 
 // update employee role function
-async function updateRole() {
+async function editRole() {
     const employeeArr = []
     const employeeData = await db.query(``)
         employeeData.map(({first_name,last_name,id}) =>
@@ -258,7 +258,7 @@ async function updateRole() {
 }
 
 // function to update manager of employee
-async function updateManager() {
+async function editEmpManager() {
     const employeeArr = []
     const employeeData = await db.query(``)
         employeeData.map(({first_name, last_name, id}) =>
@@ -304,4 +304,17 @@ async function viewManagers() {
         console.table(d)
         startPrompt()
     }
+}
+
+// add a manager 
+async function addManager() {
+    const answer = await inquirer.prompt([
+        {
+            message: "Enter the Manager's full name",
+            type: 'input',
+            name: 'name'
+        }
+    ])
+    await db.query(``)
+    startPrompt()
 }
