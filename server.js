@@ -2,6 +2,7 @@
 const inquirer = require('inquirer')
 const mysql = require('mysql')
 const cTable = require('console.table')
+const { title } = require('process')
 const db = require( './app/connection' )('employees','mischadab')
 
 
@@ -329,6 +330,30 @@ async function addRole() {
                 type: 'list',
                 name: 'id',
                 choices: deptArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
+
+// function to remove a role
+async function removeRole() {
+    const roleArr = []
+    const roleData = await db.query()
+        roleData.map(({title, id}) => {
+            roleArr.push({name: title, value:id})
+        })
+    if ( roleArr.length == 0 ) {
+        console.log(`Error, list of roles is required`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Choose a role to remove',
+                type: 'list',
+                name: 'id',
+                choices: roleArr
             }
         ])
         await db.query(``)
