@@ -202,8 +202,8 @@ async function addEmployee() {
 // remove employee function
 async function removeEmployee(){
     const employeeArr []
-    const data = await db.query(``)
-        data.map(({first_name,last_name,id}) => {
+    const EmployeeData = await db.query(``)
+        employeeData.map(({first_name,last_name,id}) => {
         employeeArr.push({name:`${first_name} ${last_name}`, value:id})
     })
     if(employeeArr.length == 0){
@@ -226,12 +226,12 @@ async function removeEmployee(){
 // update employee role function
 async function updateRole() {
     const employeeArr = []
-    const data = await db.query(``)
-        data.map(({first_name,last_name,id}) =>
+    const employeeData = await db.query(``)
+        employeeData.map(({first_name,last_name,id}) =>
         employeeArr.push({name:`${first_name} ${last_name}`}))
     const roleArr = []
-    const d = await db.query(``)
-    d.map(({title, id}) => {
+    const roleData = await db.query(``)
+    roleData.map(({title, id}) => {
         roleArr.push({name:title,value:id})
     })
     if ( employeeArr.length == 0 ) {
@@ -250,6 +250,42 @@ async function updateRole() {
                 type: 'list',
                 name: 'updatedRole',
                 choices: roleArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
+
+async function updateManager() {
+    const employeeArr = []
+    const employeeData = await db.query(``)
+        employeeData.map(({first_name, last_name, id}) =>
+            employeeArr.push({name: `${first_name} ${last_name}`, value:id}))
+    const managerArr = []
+    const managerData = await db.query(``)
+        managerData.map(({manager, id}) => {
+            managerArr.push({name:manager, value:id})
+        })
+    if ( employeeArr.length == 0 ) {
+        console.log(`Error, list of employees is required!`)
+        startPrompt()
+    } else if ( managerArr.length == 0 ) {
+        console.log(`Error, list of managers is required!`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Choose the employee you want to update',
+                type: 'list',
+                name: 'employee',
+                choices: 'employeeArr'
+            },
+            {
+                message: 'Choose a Manager to assign this Employee to',
+                type: 'list',
+                name: 'newManager',
+                choices: managerArr
             }
         ])
         await db.query(``)
