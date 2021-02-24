@@ -79,3 +79,14 @@ async function startPrompt(){
         
     }
 }
+
+// view employees prompt, join databases
+async function viewEmployees(){
+    const d = await db.query(``)
+    if (d.length == 0) {
+        startPrompt()
+    } else {
+        console.table(d)
+        startPrompt()
+    }
+}
