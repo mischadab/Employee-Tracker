@@ -372,3 +372,16 @@ async function viewDepts() {
         startPrompt()
     }
 }
+
+// function to add department
+async function addDept() {
+    const answer = await inquirer.prompt([
+        {
+            message: 'Enter the name of the Department',
+            type: 'input',
+            name: 'deptName'
+        }
+    ])
+    await db.query(``)
+    startPrompt()
+}
