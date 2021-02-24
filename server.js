@@ -257,6 +257,7 @@ async function updateRole() {
     }
 }
 
+// function to update manager of employee
 async function updateManager() {
     const employeeArr = []
     const employeeData = await db.query(``)
@@ -290,5 +291,17 @@ async function updateManager() {
         ])
         await db.query(``)
         viewEmployees()
+    }
+}
+
+// function to view list of managers 
+async function viewManagers() {
+    const managerData =  await db.query(``)
+    if ( managerData == 0 ) {
+        console.log(`The list of managers is empty`)
+        startPrompt()
+    } else {
+        console.table(d)
+        startPrompt()
     }
 }
