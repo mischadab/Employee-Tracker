@@ -19,9 +19,8 @@ async function startPrompt(){
             'Remove Employee',
             'Edit Employee Role',
             'Edit Employee Manager',
-            'View all Managers',
-            'Add Manager',
             'View all Roles',
+            'Add Role',
             'Remove Role',
             'View all Departments',
             'Add Department',
@@ -53,17 +52,14 @@ async function startPrompt(){
         case 'Edit Employee Manager':
             editEmpManager();
             break;
-        case 'View all Managers':
-            viewManagers();
-            break;
-        case 'Add Manager':
-            addManager();
-            break;
-        case 'Remove Manager':
-            removeManager();
-            break;
         case 'View all Roles':
             viewRoles();
+            break;
+        case 'Add Role':
+            addRole();
+            break;
+        case 'Remove Role':
+            removeRole();
             break;
         case 'View all Departments':
             viewDepts();
@@ -294,27 +290,6 @@ async function editEmpManager() {
     }
 }
 
-// function to view list of managers 
-async function viewManagers() {
-    const managerData =  await db.query(``)
-    if ( managerData == 0 ) {
-        console.log(`The list of managers is empty`)
-        startPrompt()
-    } else {
-        console.table(d)
-        startPrompt()
-    }
-}
+async function viewRoles() {
 
-// add a manager 
-async function addManager() {
-    const answer = await inquirer.prompt([
-        {
-            message: "Enter the Manager's full name",
-            type: 'input',
-            name: 'name'
-        }
-    ])
-    await db.query(``)
-    startPrompt()
 }
