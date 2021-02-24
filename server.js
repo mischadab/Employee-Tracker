@@ -360,3 +360,15 @@ async function removeRole() {
         viewEmployees()
     }
 }
+
+// function to view all departments
+async function viewDepts() {
+    const deptData = await db.query(``)
+    if (deptData.length == 0) {
+        console.log(`Error, the list of departments is empty`)
+        startPrompt()
+    } else {
+        console.table(deptData)
+        startPrompt()
+    }
+}
