@@ -290,6 +290,15 @@ async function editEmpManager() {
     }
 }
 
-async function viewRoles() {
 
+// function to view roles of employees
+async function viewRoles() {
+    const roleData = await db.query(``)
+    if ( roleData.length == 0 ) {
+        console.log( `Error: The list of roles is empty`)
+        startPrompt()
+    } else {
+        console.table(roleData)
+        startPrompt()
+    }
 }
