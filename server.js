@@ -150,3 +150,51 @@ async function viewByManager(){
         }
     }
 }
+
+// add employee function 
+async function addEmployee() {
+    let employeeArr = []
+    let managerArr = []
+    const data = await db.query(``)
+    data.map(({title,id}) => {
+        employeeArr.push({name:title, value:id})
+    })
+    const d = await db.query(``)
+    d.map(({manager,id}) => {
+        managerArr.push({name:manager, value:id})
+    })
+    if ( employeeArr.length == 0 ) {
+        console.log(`Error, list of roles required`)
+        startPrompt()
+    } else if (managerArr.length == 0) {
+        console.log(`Error list of managers required`)
+        startPrompt()
+    } else {
+        const questions = await inquirer.prompt([
+            {
+                message: "What is the Employee's first name?",
+                type: 'input',
+                name: 'firstName'
+            },
+            {
+                message: "What is the Employee's last name?",
+                type: 'input',
+                name: 'lastName'
+            },
+            {
+                message: "What is the Employee's role?",
+                type: 'list',
+                name: 'role',
+                choices: employeeArr
+            },
+            {
+                message: "Who is the Employee's Manager?",
+                type: 'list',
+                name: 'manager',
+                choices: managerArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
