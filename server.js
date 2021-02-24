@@ -203,7 +203,7 @@ async function addEmployee() {
 async function removeEmployee(){
     const employeeArr []
     const data = await db.query(``)
-    data.map(({first_name,last_name,id}) => {
+        data.map(({first_name,last_name,id}) => {
         employeeArr.push({name:`${first_name} ${last_name}`, value:id})
     })
     if(employeeArr.length == 0){
@@ -216,6 +216,40 @@ async function removeEmployee(){
                 type: 'list',
                 name: 'id',
                 choices: employeeArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
+
+// update employee role function
+async function updateRole() {
+    const employeeArr = []
+    const data = await db.query(``)
+        data.map(({first_name,last_name,id}) =>
+        employeeArr.push({name:`${first_name} ${last_name}`}))
+    const roleArr = []
+    const d = await db.query(``)
+    d.map(({title, id}) => {
+        roleArr.push({name:title,value:id})
+    })
+    if ( employeeArr.length == 0 ) {
+        console.log(`Error, list of employees is required`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Choose an Employee to update',
+                type: 'list',
+                name: 'employee',
+                choices: employeeArr
+            },
+            {
+                message: 'Choose a role to assign',
+                type: 'list',
+                name: 'updatedRole',
+                choices: roleArr
             }
         ])
         await db.query(``)
