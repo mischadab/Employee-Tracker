@@ -385,3 +385,25 @@ async function addDept() {
     await db.query(``)
     startPrompt()
 }
+
+// function to remove department
+async function removeDept() {
+    const deptArr = []
+    const deptData = await db.query(``)
+        deptData.map(({department, id}) => {
+            deptArr.push({name:department, value:id})
+        })
+    if (deptArr.length == 0) {
+        console.log(`Error: List of Departments is required!`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Select a department to remove',
+                type: 'list',
+                name: 'id',
+                choices: deptArr
+            }
+        ])
+    }
+}
