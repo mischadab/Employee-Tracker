@@ -78,11 +78,11 @@ async function startPrompt(){
 
 // view employees prompt, join databases
 async function viewEmployees(){
-    const d = await db.query(``)
-    if (d.length == 0) {
+    const employeeData = await db.query(``)
+    if (employeeData.length == 0) {
         startPrompt()
     } else {
-        console.table(d)
+        console.table(employeeData)
         startPrompt()
     }
 }
@@ -106,12 +106,12 @@ async function viewByDept(){
                 name: 'department'
             }
         ])
-        const d = await db.query(``)
-        if (d.length == 0){
+        const deptData = await db.query(``)
+        if (deptData.length == 0){
             console.log(`No employees in this department`)
             startPrompt()
         } else {
-            console.table(d)
+            console.table(deptData)
             startPrompt()
         }
     }
@@ -136,12 +136,12 @@ async function viewByManager(){
             name: 'manager'
             }
         ])
-        const d = await db.query(``)
-        if (d.length == 0) {
+        const managerData = await db.query(``)
+        if (managerData.length == 0) {
             console.log( `No employees assigned to this manager`)
             startPrompt()
         } else {
-            console.table(d)
+            console.table(managerData)
             startPrompt()
         }
     }
@@ -197,7 +197,7 @@ async function addEmployee() {
 
 // remove employee function
 async function removeEmployee(){
-    const employeeArr []
+    const employeeArr = []
     const EmployeeData = await db.query(``)
         employeeData.map(({first_name,last_name,id}) => {
         employeeArr.push({name:`${first_name} ${last_name}`, value:id})
