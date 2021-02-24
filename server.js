@@ -120,3 +120,33 @@ async function viewByDept(){
         }
     }
 }
+
+// view employees by manager, grab from db
+async function viewByManager(){
+    const managerArr = []
+    const data = await db.query(``)
+    data.map(({manager, id}) => {
+        managerArr.push({name: manager, value: id})
+    })
+    if (managerArr.length == 0){
+        console.log(`No managers found`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+            message: 'Select a manager list to view',
+            type: 'list',
+            choices: managerArr,
+            name: 'manager'
+            }
+        ])
+        const d = await db.query(``)
+        if (d.length == 0) {
+            console.log( `No employees assigned to this manager`)
+            startPrompt()
+        } else {
+            console.table(d)
+            startPrompt()
+        }
+    }
+}
