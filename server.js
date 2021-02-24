@@ -29,4 +29,53 @@ async function startPrompt(){
         ]
         }
     ])
+
+    // function to prompt user and to run assigned functions using switch case
+    switch (answer) {
+        case 'View all Employees':
+            viewEmployees();
+            break;
+        case 'View all Employees by Department':
+            viewByDept();
+            break;
+        case 'View all Employees by Manager':
+            viewByManager();
+            break;
+        case 'Add Employee':
+            addEmployee();
+            break;
+        case 'Remove Employee':
+            removeEmployee();
+            break;
+        case 'Update Employee Role':
+            updateRole();
+            break;
+        case 'Update Employee Manager':
+            updateManager();
+            break;
+        case 'View all Managers':
+            viewManagers();
+            break;
+        case 'Add Manager':
+            addManager();
+            break;
+        case 'Remove Manager':
+            removeManager();
+            break;
+        case 'View all Roles':
+            viewRoles();
+            break;
+        case 'View all Departments':
+            viewDepts();
+            break;
+        case 'Add Department':
+            addDept();
+            break;
+        case 'Remove Department':
+            removeDept();
+            break;
+        default:
+            console.log('Error')
+        
+    }
 }
