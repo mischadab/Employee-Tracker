@@ -90,3 +90,33 @@ async function viewEmployees(){
         startPrompt()
     }
 }
+
+// view depts prompt, grab from db
+async function viewByDept(){
+    const deptArr = []
+    const data = await db.query(``)
+    data.map(({department, id}) => {
+        deptArr.push({name: department, value: id})
+    })
+    if ( arr.length == 0 ) {
+        console.log(`Error, no department found`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Choose a department to view',
+                type: 'list',
+                choices: deptArr,
+                name: 'department'
+            }
+        ])
+        const d = await db.query(``)
+        if (d.length == 0){
+            console.log(`No employees in this department`)
+            startPrompt()
+        } else {
+            console.table(d)
+            startPrompt()
+        }
+    }
+}
