@@ -302,3 +302,36 @@ async function viewRoles() {
         startPrompt()
     }
 }
+
+// function to add a role
+async function addRole() {
+    const deptArr = []
+    const deptData = await db.query(``)
+        deptData.map(({department, id}) => 
+        deptArr.push({name:deptartment, value:id}))
+    if (deptArr.length == 0) {
+        console.log( `Error: list of departments is required` )
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'What role do you wish to add?',
+                type: 'input',
+                name: 'title'
+            },
+            {
+                message: 'Please input the salary for this role',
+                type: 'input',
+                name: 'salary'
+            },
+            {
+                message: 'Choose a Department to assign this role to',
+                type: 'list',
+                name: 'id',
+                choices: deptArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
