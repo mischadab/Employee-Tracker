@@ -198,3 +198,27 @@ async function addEmployee() {
         viewEmployees()
     }
 }
+
+// remove employee function
+async function removeEmployee(){
+    const employeeArr []
+    const data = await db.query(``)
+    data.map(({first_name,last_name,id}) => {
+        employeeArr.push({name:`${first_name} ${last_name}`, value:id})
+    })
+    if(employeeArr.length == 0){
+        console.log(`Error, list of employees required!`)
+        startPrompt()
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                message: 'Choose an Employee to remove',
+                type: 'list',
+                name: 'id',
+                choices: employeeArr
+            }
+        ])
+        await db.query(``)
+        viewEmployees()
+    }
+}
