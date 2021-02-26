@@ -405,5 +405,8 @@ async function removeDept() {
                 choices: deptArr
             }
         ])
+        await db.query(`DELETE FROM department WHERE id = '${answer.id}'`)
+        await db.query(`DELETE FROM role WHERE department_id = '${answer.id}'`)
+        viewEmployees();
     }
 }
