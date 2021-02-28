@@ -313,7 +313,8 @@ async function addRole() {
     const deptData = await db.query('SELECT * FROM department')
     console.log(deptData)
         const departments = deptData.map(({department, id}) => 
-      ({name:department, value:id}))
+      ({name:department, value:id})
+      )
     // if (deptArr.length == 0) {
     //     console.log( `Error: list of departments is required` )
     //     startPrompt()
@@ -333,7 +334,7 @@ async function addRole() {
                 message: 'Choose a Department to assign this role to',
                 type: 'list',
                 name: 'department_id',
-                choices: deptData
+                choices: departments
             }
         ])
         await db.query('INSERT INTO role SET ?', [answer])
