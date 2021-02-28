@@ -1,7 +1,7 @@
 // requirements
 const inquirer = require('inquirer')
 const mysql = require('mysql')
-const cTable = require('console.table')
+const consoleTable = require('console.table')
 const { title } = require('process')
 const db = require( './app/connection' )('employees','mischadab')
 
@@ -26,12 +26,12 @@ async function startPrompt(){
             'View all Departments',
             'Add Department',
             'Remove Department',
-        ]
+        ],
         }
     ])
 
     // function to prompt user and to run assigned functions using switch case
-    switch (answer) {
+    switch (answer.action) {
         case 'View all Employees':
             viewEmployees();
             break;
@@ -410,3 +410,5 @@ async function removeDept() {
         viewEmployees();
     }
 }
+
+startPrompt();
