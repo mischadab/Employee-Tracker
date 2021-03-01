@@ -396,27 +396,27 @@ async function addDept() {
 
 // function to remove department
 async function removeDept() {
-    const deptArr = []
+    // const deptArr = []
     const deptData = await db.query(`SELECT * FROM department`)
-        deptData.map(({department, id}) => {
-            deptArr.push({name:department, value:id})
-        })
-    if (deptArr.length == 0) {
-        console.log(`Error: List of Departments is required!`)
-        startPrompt()
-    } else {
+        const departments = deptData.map(({department, id}) => 
+            ({name:department, value:id})
+        )
+    // if (deptArr.length == 0) {
+    //     console.log(`Error: List of Departments is required!`)
+    //     startPrompt()
+    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Select a department to remove',
                 type: 'list',
                 name: 'id',
-                choices: deptArr
+                choices: departments
             }
         ])
         await db.query(`DELETE FROM department WHERE id = '${answer.id}'`)
         await db.query(`DELETE FROM role WHERE department_id = '${answer.id}'`)
         viewEmployees();
     }
-}
+// }
 
 startPrompt();
