@@ -203,9 +203,11 @@ async function addEmployee() {
 async function removeEmployee(){
     // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
-        employeeData.map(({first_name,last_name,id}) => 
+     const employees=   employeeData.map(({first_name,last_name,id}) => 
         ({name:first_name, last_name, value:id})
     )
+    
+    console.log(employeeData)
     // if(employeeArr.length == 0){
     //     console.log(`Error, list of employees required!`)
     //     startPrompt()
@@ -215,7 +217,7 @@ async function removeEmployee(){
                 message: 'Choose an Employee to remove',
                 type: 'list',
                 name: 'id',
-                choices: employeeData
+                choices: employees
             }
         ])
         await db.query(`DELETE FROM employee WHERE id = ${answer.id}`)
@@ -227,12 +229,12 @@ async function removeEmployee(){
 async function editRole() {
     // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
-        employeeData.map(({first_name,last_name,id}) =>
+        const employees = employeeData.map(({first_name,last_name,id}) =>
         ({name:`${first_name} ${last_name}`,value:id})
         )
     // const roleArr = []
     const roleData = await db.query('SELECT * FROM role')
-    roleData.map(({title, id}) => 
+    const roles = roleData.map(({title, id}) => 
      ({name:title,value:id})
     )
     // if ( employeeArr.length == 0 ) {
@@ -244,16 +246,16 @@ async function editRole() {
                 message: 'Choose an Employee to update',
                 type: 'list',
                 name: 'employee',
-                choices: employeeData
+                choices: employees
             },
             {
                 message: 'Choose a role to assign',
                 type: 'list',
                 name: 'updatedRole',
-                choices: roleData
+                choices: roles
             }
         ])
-        await db.query(`UPDATE employee SET role_id = ${answer.newRole} WHERE id = ${answer.employee}`)
+        await db.query(`UPDATE employee SET role_id = ${answer.updatedRole} WHERE id = ${answer.employee}`)
         viewEmployees()
     }
 // }
