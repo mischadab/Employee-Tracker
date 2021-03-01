@@ -262,40 +262,41 @@ async function editRole() {
 
 // function to update manager of employee
 async function editEmpManager() {
-    const employeeArr = []
-    const employeeData = await db.query(`SELECT * FROM employee`)
-        employeeData.map(({first_name, last_name, id}) =>
-            employeeArr.push({name: `${first_name} ${last_name}`, value:id}))
-    const managerArr = []
-    const managerData = await db.query(``)
-        managerData.map(({manager, id}) => {
-            managerArr.push({name:manager, value:id})
-        })
-    if ( employeeArr.length == 0 ) {
-        console.log(`Error, list of employees is required!`)
-        startPrompt()
-    } else if ( managerArr.length == 0 ) {
-        console.log(`Error, list of managers is required!`)
-        startPrompt()
-    } else {
+    // const employeeArr = []
+    const employeeData = await db.query('SELECT * FROM employee')
+        const employees = employeeData.map(({first_name, last_name, id}) =>
+            ({name: `${first_name} ${last_name}`, value:id})
+            )
+    // const managerArr = []
+    const managerData = await db.query('SELECT * FROM manager')
+        const managers = managerData.map(({manager, id}) => 
+           ({name:manager, value:id})
+        )
+    // if ( employeeArr.length == 0 ) {
+    //     console.log(`Error, list of employees is required!`)
+    //     startPrompt()
+    // } else if ( managerArr.length == 0 ) {
+    //     console.log(`Error, list of managers is required!`)
+    //     startPrompt()
+    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose the employee you want to update',
                 type: 'list',
                 name: 'employee',
-                choices: 'employeeArr'
+                choices: employees
             },
             {
                 message: 'Choose a Manager to assign this Employee to',
                 type: 'list',
                 name: 'newManager',
-                choices: managerArr
+                choices: managers
             }
         ])
         await db.query(`UPDATE employee SET manager_id = ${answer.newManager} WHERE id = ${answer.employee}`)
         viewEmployees()
     }
-}
+// }
 
 
 // function to view roles of employees
