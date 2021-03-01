@@ -203,7 +203,7 @@ async function addEmployee() {
 async function removeEmployee(){
     // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
-     const employees=   employeeData.map(({first_name,last_name,id}) => 
+     const employees =   employeeData.map(({first_name,last_name,id}) => 
         ({name:first_name, last_name, value:id})
     )
     
@@ -347,27 +347,27 @@ async function addRole() {
 
 // function to remove a role
 async function removeRole() {
-    const roleArr = []
-    const roleData = await db.query(`SELECT * FROM role`)
-        roleData.map(({title, id}) => {
-            roleArr.push({name: title, value:id})
-        })
-    if ( roleArr.length == 0 ) {
-        console.log(`Error, list of roles is required`)
-        startPrompt()
-    } else {
+    // const roleArr = []
+    const roleData = await db.query('SELECT * FROM role')
+    const roles = roleData.map(({title, id}) => 
+     ({name: title, value:id})
+    )
+    // if ( roleArr.length == 0 ) {
+    //     console.log(`Error, list of roles is required`)
+    //     startPrompt()
+    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose a role to remove',
                 type: 'list',
                 name: 'id',
-                choices: roleArr
+                choices: roles
             }
         ])
         await db.query(`DELETE FROM role WHERE id = '${answer.id}'`)
         viewEmployees()
     }
-}
+// }
 
 // function to view all departments
 async function viewDepts() {
