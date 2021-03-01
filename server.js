@@ -20,6 +20,7 @@ async function startPrompt(){
             'Remove Employee',
             'Edit Employee Role',
             'Edit Employee Manager',
+            'Remove Manager',
             'View all Roles',
             'Add Role',
             'Remove Role',
@@ -52,6 +53,9 @@ async function startPrompt(){
             break;
         case 'Edit Employee Manager':
             editEmpManager();
+            break;
+        case 'Remove Manager':
+            removeManager();
             break;
         case 'View all Roles':
             viewRoles();
@@ -203,7 +207,7 @@ async function addEmployee() {
 async function removeEmployee(){
     // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
-     const employees =   employeeData.map(({first_name,last_name,id}) => 
+     const employees =  employeeData.map(({first_name,last_name,id}) => 
         ({name:first_name, last_name, value:id})
     )
     
@@ -298,10 +302,27 @@ async function editEmpManager() {
     }
 // }
 
+async function removeManager() {
+    const managerData = await db.query('SELECT * FROM manager')
+        const managers = managerData.map( ({manager, id}) =>
+        ({name: manager, value: id})
+        )
+    const answer = await inquirer.prompt([
+        {
+            message: 'Choose a Manager to remove',
+            type: 'list',
+            name: 'id',
+            choices: managers
+        }
+    ])
+    await db.query(`DELETE FROM manager WHERE id = ${answer.id}`)
+    startPrompt();
+}
+
 
 // function to view roles of employees
 async function viewRoles() {
-    const roleData = await db.query(`SELECT * FROM role`)
+    const roleData = await db.query('SELECT * FROM role')
     if ( roleData.length == 0 ) {
         console.log( `Error: The list of roles is empty`)
         startPrompt()
