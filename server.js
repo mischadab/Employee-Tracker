@@ -91,11 +91,11 @@ async function viewEmployees(){
 // view depts prompt, grab from db
 async function viewByDept(){
     const deptArr = []
-    const data = await db.query(`SELECT * FROM department`)
+    const data = await db.query('SELECT * FROM department')
     data.map(({department, id}) => {
         deptArr.push({name: department, value: id})
     })
-    if ( arr.length == 0 ) {
+    if ( deptArr.length == 0 ) {
         console.log(`Error, no department found`)
         startPrompt()
     } else {
@@ -202,7 +202,7 @@ async function addEmployee() {
 // remove employee function
 async function removeEmployee(){
     const employeeArr = []
-    const EmployeeData = await db.query(`SELECT * FROM employee`)
+    const EmployeeData = await db.query('SELECT * FROM employee')
         employeeData.map(({first_name,last_name,id}) => {
         employeeArr.push({name:`${first_name} ${last_name}`, value:id})
     })
@@ -387,7 +387,7 @@ async function addDept() {
             name: 'department'
         }
     ])
-    await db.query('INSERT INTO department VALUES(?,?)',[answer.name])
+    await db.query('INSERT INTO department SET ?', [answer] )
     startPrompt()
 }
 
