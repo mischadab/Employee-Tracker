@@ -201,61 +201,62 @@ async function addEmployee() {
 
 // remove employee function
 async function removeEmployee(){
-    const employeeArr = []
-    const EmployeeData = await db.query('SELECT * FROM employee')
-        employeeData.map(({first_name,last_name,id}) => {
-        employeeArr.push({name:`${first_name} ${last_name}`, value:id})
-    })
-    if(employeeArr.length == 0){
-        console.log(`Error, list of employees required!`)
-        startPrompt()
-    } else {
+    // const employeeArr = []
+    const employeeData = await db.query('SELECT * FROM employee')
+        employeeData.map(({first_name,last_name,id}) => 
+        ({name:first_name, last_name, value:id})
+    )
+    // if(employeeArr.length == 0){
+    //     console.log(`Error, list of employees required!`)
+    //     startPrompt()
+    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose an Employee to remove',
                 type: 'list',
                 name: 'id',
-                choices: employeeArr
+                choices: employeeData
             }
         ])
         await db.query(`DELETE FROM employee WHERE id = ${answer.id}`)
         viewEmployees()
     }
-}
+// }
 
 // update employee role function
 async function editRole() {
-    const employeeArr = []
-    const employeeData = await db.query(`SELECT * FROM employee`)
+    // const employeeArr = []
+    const employeeData = await db.query('SELECT * FROM employee')
         employeeData.map(({first_name,last_name,id}) =>
-        employeeArr.push({name:`${first_name} ${last_name}`,value:id}))
-    const roleArr = []
-    const roleData = await db.query(`SELECT * FROM role`)
-    roleData.map(({title, id}) => {
-        roleArr.push({name:title,value:id})
-    })
-    if ( employeeArr.length == 0 ) {
-        console.log(`Error, list of employees is required`)
-        startPrompt()
-    } else {
+        ({name:`${first_name} ${last_name}`,value:id})
+        )
+    // const roleArr = []
+    const roleData = await db.query('SELECT * FROM role')
+    roleData.map(({title, id}) => 
+     ({name:title,value:id})
+    )
+    // if ( employeeArr.length == 0 ) {
+    //     console.log(`Error, list of employees is required`)
+    //     startPrompt()
+    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose an Employee to update',
                 type: 'list',
                 name: 'employee',
-                choices: employeeArr
+                choices: employeeData
             },
             {
                 message: 'Choose a role to assign',
                 type: 'list',
                 name: 'updatedRole',
-                choices: roleArr
+                choices: roleData
             }
         ])
         await db.query(`UPDATE employee SET role_id = ${answer.newRole} WHERE id = ${answer.employee}`)
         viewEmployees()
     }
-}
+// }
 
 // function to update manager of employee
 async function editEmpManager() {
