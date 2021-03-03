@@ -5,7 +5,6 @@ const consoleTable = require('console.table')
 const { title } = require('process')
 const db = require( './app/connection' )('employees','mischadab')
 
-
 // function for question prompt
 async function startPrompt(){
     const answer = await inquirer.prompt([
@@ -85,6 +84,7 @@ async function startPrompt(){
 async function viewEmployees(){
     const employeeData = await db.query(`SELECT e.id, e.first_name, e.last_name, r.title,d.department, r.salary, m.manager FROM employee AS e LEFT JOIN role AS r ON e.role_id = r.id LEFT JOIN department AS d ON r.department_id = d.id LEFT JOIN manager AS m ON e.manager_id = m.id`)
     if (employeeData.length == 0) {
+        console.log('Error, no employees found')
         startPrompt()
     } else {
         console.table(employeeData)
@@ -154,8 +154,6 @@ async function viewByManager(){
 
 // add employee function 
 async function addEmployee() {
-    // let employeeArr = []
-    // let managerArr = []
     const roleArr = await db.query(`SELECT * FROM role`)
    
    const roles= roleArr.map(({title,id}) => 
@@ -166,13 +164,6 @@ async function addEmployee() {
     const managers=managerArr.map(({first_name,id}) => 
         ({name:first_name, value:id})
     )
-    // if ( employeeArr.length == 0 ) {
-    //     console.log(`Error, list of roles required`)
-    //     startPrompt()
-    // } else if (managerArr.length == 0) {
-    //     console.log(`Error list of managers required`)
-    //     startPrompt()
-    // } else {
         const questions = await inquirer.prompt([
             {
                 message: "What is the Employee's first name?",
@@ -201,21 +192,14 @@ async function addEmployee() {
         await db.query('INSERT INTO employee SET ?', [questions])
         viewEmployees()
     }
-// }
 
 // remove employee function
 async function removeEmployee(){
-    // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
      const employees =  employeeData.map(({first_name,last_name,id}) => 
         ({name:first_name, last_name, value:id})
     )
-    
     console.log(employeeData)
-    // if(employeeArr.length == 0){
-    //     console.log(`Error, list of employees required!`)
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose an Employee to remove',
@@ -227,24 +211,17 @@ async function removeEmployee(){
         await db.query(`DELETE FROM employee WHERE id = ${answer.id}`)
         viewEmployees()
     }
-// }
 
 // update employee role function
 async function editRole() {
-    // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
         const employees = employeeData.map(({first_name,last_name,id}) =>
         ({name:`${first_name} ${last_name}`,value:id})
         )
-    // const roleArr = []
     const roleData = await db.query('SELECT * FROM role')
     const roles = roleData.map(({title, id}) => 
      ({name:title,value:id})
     )
-    // if ( employeeArr.length == 0 ) {
-    //     console.log(`Error, list of employees is required`)
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose an Employee to update',
@@ -262,27 +239,17 @@ async function editRole() {
         await db.query(`UPDATE employee SET role_id = ${answer.updatedRole} WHERE id = ${answer.employee}`)
         viewEmployees()
     }
-// }
 
 // function to update manager of employee
 async function editEmpManager() {
-    // const employeeArr = []
     const employeeData = await db.query('SELECT * FROM employee')
         const employees = employeeData.map(({first_name, last_name, id}) =>
             ({name: `${first_name} ${last_name}`, value:id})
             )
-    // const managerArr = []
     const managerData = await db.query('SELECT * FROM manager')
         const managers = managerData.map(({manager, id}) => 
            ({name:manager, value:id})
         )
-    // if ( employeeArr.length == 0 ) {
-    //     console.log(`Error, list of employees is required!`)
-    //     startPrompt()
-    // } else if ( managerArr.length == 0 ) {
-    //     console.log(`Error, list of managers is required!`)
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose the employee you want to update',
@@ -300,7 +267,6 @@ async function editEmpManager() {
         await db.query(`UPDATE employee SET manager_id = ${answer.newManager} WHERE id = ${answer.employee}`)
         viewEmployees()
     }
-// }
 
 async function removeManager() {
     const managerData = await db.query('SELECT * FROM manager')
@@ -319,7 +285,6 @@ async function removeManager() {
     startPrompt();
 }
 
-
 // function to view roles of employees
 async function viewRoles() {
     const roleData = await db.query('SELECT * FROM role')
@@ -334,16 +299,11 @@ async function viewRoles() {
 
 // function to add a role
 async function addRole() {
-    // const deptArr = []
     const deptData = await db.query('SELECT * FROM department')
     console.log(deptData)
         const departments = deptData.map(({department, id}) => 
       ({name:department, value:id})
       )
-    // if (deptArr.length == 0) {
-    //     console.log( `Error: list of departments is required` )
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'What role do you wish to add?',
@@ -365,19 +325,13 @@ async function addRole() {
         await db.query('INSERT INTO role SET ?', [answer])
         viewEmployees()
     }
-// }
 
 // function to remove a role
 async function removeRole() {
-    // const roleArr = []
     const roleData = await db.query('SELECT * FROM role')
     const roles = roleData.map(({title, id}) => 
      ({name: title, value:id})
     )
-    // if ( roleArr.length == 0 ) {
-    //     console.log(`Error, list of roles is required`)
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Choose a role to remove',
@@ -389,7 +343,6 @@ async function removeRole() {
         await db.query(`DELETE FROM role WHERE id = '${answer.id}'`)
         viewEmployees()
     }
-// }
 
 // function to view all departments
 async function viewDepts() {
@@ -418,15 +371,10 @@ async function addDept() {
 
 // function to remove department
 async function removeDept() {
-    // const deptArr = []
     const deptData = await db.query(`SELECT * FROM department`)
         const departments = deptData.map(({department, id}) => 
             ({name:department, value:id})
         )
-    // if (deptArr.length == 0) {
-    //     console.log(`Error: List of Departments is required!`)
-    //     startPrompt()
-    // } else {
         const answer = await inquirer.prompt([
             {
                 message: 'Select a department to remove',
@@ -439,6 +387,5 @@ async function removeDept() {
         await db.query(`DELETE FROM role WHERE department_id = '${answer.id}'`)
         viewEmployees();
     }
-// }
 
 startPrompt();
