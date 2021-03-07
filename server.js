@@ -116,7 +116,6 @@ async function viewByDept(){
             console.log(`No employees in this department`)
             startPrompt()
         } else {
-            console.table(deptData)
             startPrompt()
         }
     }
@@ -146,7 +145,6 @@ async function viewByManager(){
             console.log( `No employees assigned to this manager`)
             startPrompt()
         } else {
-            console.table(managerData)
             startPrompt()
         }
     }
@@ -155,7 +153,6 @@ async function viewByManager(){
 // add employee function 
 async function addEmployee() {
     const roleArr = await db.query(`SELECT * FROM role`)
-   
    const roles= roleArr.map(({title,id}) => 
         ({name:title, value:id})
     )
@@ -188,9 +185,8 @@ async function addEmployee() {
                 choices: managers
             }
         ])
-        console.log(questions)
         await db.query('INSERT INTO employee SET ?', [questions])
-        viewEmployees()
+        startPrompt();
     }
 
 // remove employee function
@@ -199,7 +195,6 @@ async function removeEmployee(){
      const employees =  employeeData.map(({first_name,last_name,id}) => 
         ({name:first_name, last_name, value:id})
     )
-    console.log(employeeData)
         const answer = await inquirer.prompt([
             {
                 message: 'Choose an Employee to remove',
@@ -237,7 +232,7 @@ async function editRole() {
             }
         ])
         await db.query(`UPDATE employee SET role_id = ${answer.updatedRole} WHERE id = ${answer.employee}`)
-        viewEmployees()
+        startPrompt()
     }
 
 // function to update manager of employee
@@ -265,7 +260,7 @@ async function editEmpManager() {
             }
         ])
         await db.query(`UPDATE employee SET manager_id = ${answer.newManager} WHERE id = ${answer.employee}`)
-        viewEmployees()
+        startPrompt()
     }
 
 async function removeManager() {
@@ -300,7 +295,6 @@ async function viewRoles() {
 // function to add a role
 async function addRole() {
     const deptData = await db.query('SELECT * FROM department')
-    console.log(deptData)
         const departments = deptData.map(({department, id}) => 
       ({name:department, value:id})
       )
@@ -323,7 +317,7 @@ async function addRole() {
             }
         ])
         await db.query('INSERT INTO role SET ?', [answer])
-        viewEmployees()
+        startPrompt()
     }
 
 // function to remove a role
@@ -341,7 +335,7 @@ async function removeRole() {
             }
         ])
         await db.query(`DELETE FROM role WHERE id = '${answer.id}'`)
-        viewEmployees()
+        startPrompt()
     }
 
 // function to view all departments
@@ -351,7 +345,6 @@ async function viewDepts() {
         console.log(`Error, the list of departments is empty`)
         startPrompt()
     } else {
-        console.table(deptData)
         startPrompt()
     }
 }
